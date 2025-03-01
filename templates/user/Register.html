@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - Hospital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2B6CB0;
+            --secondary-color: #4299E1;
+            --accent-color: #BEE3F8;
+            --background-color: #F7FAFC;
+            --text-color: #2D3748;
+        }
+
+        body {
+            background: var(--background-color);
+            min-height: 100vh;
+            color: var(--text-color);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .main-content {
+            padding: 6rem 1rem 4rem 1rem;
+            min-height: 100vh;
+        }
+
+        .signup-container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-control {
+            padding: 0.75rem 1rem;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--accent-color);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #718096;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #718096;
+            background: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .signup-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">
+            <i class="fas fa-hospital"></i>
+            Medico
+        </a>
+        <a href="login.html" class="btn btn-outline-primary">Login</a>
+    </header>
+
+    <main class="main-content">
+        <div class="signup-container">
+            <h2 class="text-center mb-4" style="color: var(--primary-color);">Create Your Account</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="firstname" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstname" name="first_name">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="lastname" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastname"  name="last_name">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email"  name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone"  name="phone_number">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="password-field">
+                        <input type="password" class="form-control" id="password" name="password">
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="confirm-password" class="form-label">Confirm Password</label>
+                    <div class="password-field">
+                        <input type="password" class="form-control" id="confirm-password" name="confirm_password">
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
+                <p class="text-center mb-0" style="color: #718096;">
+                    Already have an account? 
+                    <a href="{% url "login" %}" style="color: var(--primary-color); text-decoration: none; font-weight: 500;">
+                        Login here
+                    </a>
+                </p>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="mb-0">&copy; 2025 HealthCare. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.password-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.classList.remove('fa-eye');
+                    this.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    this.classList.remove('fa-eye-slash');
+                    this.classList.add('fa-eye');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
