@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'online_booking.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,17 +72,42 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'online_booking.wsgi.application'
 
+AUTH_USER_MODEL = 'accounts.CustomUser' 
 
+
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailAuthBackend',  # Make sure 'accounts' is the correct app name
+    'django.contrib.auth.backends.ModelBackend',
+]
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "hospital",
+        "USER": "postgres",
+        "PASSWORD": "superuser",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 
+STATIC_URL = "/static/"  # URL for static files
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # This is for development
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# STATIC_ROOT should be used in production for `collectstatic`
+STATIC_ROOT = BASE_DIR / "staticfiles"  
+
+# STATIC_ROOT should be an absolute path, used for production
+# STATIC_ROOT = BASE_DIR / "staticfiles"  
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -100,6 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 
 # Internationalization
@@ -123,3 +150,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "ajaydevzzz30@gmail.com"
+EMAIL_HOST_PASSWORD = "ksnm gaku rpro vzlu"
+
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Store sessions in DB
+SESSION_COOKIE_AGE = 1800  # Session expires in 30 minutes
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when browser is closed
+SESSION_COOKIE_SECURE = True  # Only use cookies over HTTPS
+SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to session cookie
+SESSION_COOKIE_SAMESITE = "Lax"  # Protect against CSRF attacks
