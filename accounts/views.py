@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from .models import CustomUser,DoctorProfile
 from django.views.decorators.cache import cache_control
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -11,8 +11,11 @@ from django.http import JsonResponse
 from django.views.decorators.cache import never_cache
 from django.core.mail import send_mail
 
+@never_cache
+@cache_control(no_store=True, no_cache=True, must_revalidate=True)
 def index(request):
-    return render(request, 'user/index.html')
+    doctors = DoctorProfile.objects.all()
+    return render(request, 'user/index.html',{'doctors':doctors})
 
 
 def Register(request):
@@ -253,3 +256,13 @@ def doctor_logout(request):
     logout(request)
     messages.success(request, "Logged out successfully!")
     return redirect("doctor-login")
+
+
+def doctor_list(request):
+    doctors = DoctorProfile.objects.all()
+    return render(request,'user/doctor.html',{'doctors':doctors})
+
+
+def doctor_details(request, doctor_id):
+    doctor = get_object_or_404(DoctorProfile, id=doctor_id)
+    return render(request, 'user/doctor_detail.html', {'doctor': doctor})

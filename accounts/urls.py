@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index,Register,Login_view,AdminLoginView,AdminHome,admin_logout_view,add_doctor,admin_doctor_list,doctor_login,doctor_dashboard,doctor_logout,logout_view
+from .views import index,Register,Login_view,AdminLoginView,AdminHome,admin_logout_view,add_doctor,admin_doctor_list,doctor_login,doctor_dashboard,doctor_logout,logout_view,doctor_list,doctor_details
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -9,6 +9,8 @@ urlpatterns = [
     path('login/',Login_view,name='login'),
     path('adminhome/',AdminHome,name='admin'),
     path('logout/',logout_view,name='logout'),
+    path('doctor-list/',doctor_list,name='doctor-list'),
+    path('doctor-detail/<int:doctor_id>/', doctor_details, name='doctor_details'),
 
     path('admin-login/', AdminLoginView, name='admin-login'),  # Admin Login
     path('admin-logout/', admin_logout_view, name='admin-logout'),
