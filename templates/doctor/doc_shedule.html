@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Schedule Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    .day-card { transition: all 0.3s; }
+    .day-card:hover { transform: translateY(-5px); box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); }
+    .day-card.unavailable { opacity: 0.7; }
+    .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+    .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: #2196F3; }
+    input:checked + .slider:before { transform: translateX(26px); }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h1 class="h3 mb-4">Doctor Schedule Management</h1>
+    <a href="#" class="btn btn-outline-primary mb-4"><i class="fas fa-calendar-alt"></i> Calendar View</a>
+    
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h5>Weekly Availability</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+            <div class="card day-card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h5 class="card-title mb-0">Monday</h5>
+                  <label class="switch">
+                    <input type="checkbox" class="day-toggle">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <a href="#" class="btn btn-sm btn-outline-secondary mt-2 w-100">Manage Time Slots</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.day-toggle').forEach(function(toggle) {
+        toggle.addEventListener('change', function() {
+          alert('Day availability toggled');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
