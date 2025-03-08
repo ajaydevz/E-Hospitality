@@ -14,7 +14,7 @@ urlpatterns = [
 
     path('admin-login/', AdminLoginView, name='admin-login'),  # Admin Login
     path('admin-logout/', admin_logout_view, name='admin-logout'),
-    path('doctor-list/', admin_doctor_list, name='doctors'),
+    path('doctors/', admin_doctor_list, name='doctors'),
     path('add-doctor/', add_doctor, name='add_doctor'),
 
     path('doctor-login/', doctor_login, name='doctor-login'),

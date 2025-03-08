@@ -1,0 +1,8 @@
+
+<h2>Payment for Appointment</h2>
+<p>Amount: ${{ appointment.payment.amount }}</p>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Pay Now</button>
+</form>
+

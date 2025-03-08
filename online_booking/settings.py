@@ -85,7 +85,7 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "hospital",
+        "NAME": "hospital1",
         "USER": "postgres",
         "PASSWORD": "superuser",
         "HOST": "localhost",

@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.shortcuts import render, redirect,get_object_or_404
 from .models import CustomUser,DoctorProfile
+from booking.models import DoctorSchedule
 from django.views.decorators.cache import cache_control
 from django.contrib.auth.decorators import login_required, user_passes_test
 import random
@@ -246,8 +247,18 @@ def doctor_dashboard(request):
     if request.user.role != "doctor":
         messages.error(request, "Unauthorized access!")
         return redirect("doctor-login")
+    
+    try:
+        doctor = DoctorProfile.objects.get(user=request.user)
+    except DoctorProfile.DoesNotExist:
+        messages.error(request, "Doctor profile not found!")
+        return redirect("doctor-login")
 
-    return render(request, "doctor/doctor_dashboard.html")
+    context = {
+        "doctor": doctor,  #
+    }
+
+    return render(request, "doctor/doctor_dashboard.html",context)
 
 
 @login_required(login_url="doctor-login") 
@@ -265,4 +276,10 @@ def doctor_list(request):
 
 def doctor_details(request, doctor_id):
     doctor = get_object_or_404(DoctorProfile, id=doctor_id)
-    return render(request, 'user/doctor_detail.html', {'doctor': doctor})
+    schedules = DoctorSchedule.objects.filter(doctor=doctor.user)
+
+    context ={
+        'doctor':doctor,
+        'schedules':schedules
+    }
+    return render(request, 'user/doctor_detail.html', context)

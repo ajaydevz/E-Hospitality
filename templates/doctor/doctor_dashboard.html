@@ -385,6 +385,31 @@
         }
         
     </style>
+
+    <style>
+        /* Add smooth hover effect */
+.hover-effect {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-effect:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Style icons */
+.icon-box {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* Animated Progress Bar */
+.animated-progress .progress-bar {
+    transition: width 1s ease-in-out;
+}
+
+    </style>
 </head>
 <body>
     <!-- Page Wrapper -->
@@ -396,7 +421,7 @@
                 <div class="sidebar-brand-icon">
                     <i class="fas fa-stethoscope fa-2x text-white"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3 text-white">MedPortal</div>
+                <div class="sidebar-brand-text mx-3 text-white">Medico</div>
             </div>
             
             <!-- Divider -->
@@ -452,7 +477,7 @@
             
             <!-- Nav Item - Schedule -->
             <div class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{% url "set_schedule" %}">
                     <i class="fas fa-fw fa-clock"></i>
                     <span>Schedule</span>
                 </a>
@@ -522,7 +547,7 @@
             </div>
         </form>
 
-        <!-- Topbar Navbar -->
+        {% comment %} <!-- Topbar Navbar -->
         <ul class="navbar-nav ml-auto align-items-center">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown">
@@ -541,111 +566,115 @@
             <!-- User Profile -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dr. Sarah Adams</span>
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{doctor.user.fisrt_name}}</span>
                     <img class="img-profile rounded-circle" src="/api/placeholder/60/60" alt="Profile Image">
                 </a>
             </li>
-        </ul>
+        </ul> {% endcomment %}
     </nav>
 
     <!-- Page Content -->
-    <div class="container-fluid">
-        <!-- Welcome Panel -->
-        <div class="row mb-4">
-            <div class="col-md-8">
-                <h1 class="h2">Welcome back, Dr. Adams!</h1>
-                <p>It's Saturday, March 1, 2025. You have 8 appointments today.</p>
-            </div>
-            <div class="col-md-4 text-right">
-                <a href="#" class="btn btn-light">
-                    <i class="fas fa-calendar-alt"></i> View Schedule
-                </a>
+    <!-- Page Content -->
+<div class="container-fluid">
+    <!-- Welcome Panel -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h2">Welcome back, Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name}}</h1>
+            <p>It's {{ today|date:"l, F j, Y" }}. You have 8 appointments today.</p>
+        </div>
+        <div class="col-md-4 text-right">
+            <a href="#" class="btn btn-light">
+                <i class="fas fa-calendar-alt"></i> View Schedule
+            </a>
+        </div>
+    </div>
+<!-- Dashboard Cards -->
+<div class="row">
+    <!-- Today's Appointments -->
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow-lg h-100 py-3 hover-effect">
+            <div class="card-body d-flex align-items-center">
+                <div class="icon-box mr-3">
+                    <i class="fas fa-calendar-check fa-3x text-primary"></i>
+                </div>
+                <div>
+                    <div class="text-uppercase font-weight-bold text-primary mb-1">Today's Appointments</div>
+                    <div class="h4 font-weight-bold text-dark">8</div>
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Dashboard Cards -->
-        <div class="row">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="mr-3">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-weight-bold text-primary">Today's Appointments</div>
-                            <div class="h5 font-weight-bold text-gray-800">8</div>
-                        </div>
-                    </div>
+    <!-- Pending Requests -->
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card border-left-warning shadow-lg h-100 py-3 hover-effect">
+            <div class="card-body d-flex align-items-center">
+                <div class="icon-box mr-3">
+                    <i class="fas fa-envelope-open-text fa-3x text-warning"></i>
+                </div>
+                <div>
+                    <div class="text-uppercase font-weight-bold text-warning mb-1">Pending Requests</div>
+                    <div class="h4 font-weight-bold text-dark">18</div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="mr-3">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-weight-bold text-warning">Pending Requests</div>
-                            <div class="h5 font-weight-bold text-gray-800">18</div>
-                        </div>
-                    </div>
+    <!-- Total Patients -->
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card border-left-success shadow-lg h-100 py-3 hover-effect">
+            <div class="card-body d-flex align-items-center">
+                <div class="icon-box mr-3">
+                    <i class="fas fa-users fa-3x text-success"></i>
                 </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card border-left-success shadow h-100 py-2">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="mr-3">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-weight-bold text-success">Total Patients</div>
-                            <div class="h5 font-weight-bold text-gray-800">215</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Task Completion Rate Card -->
-<div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-info shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Task Completion</div>
-                    <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">78%</div>
-                        </div>
-                        <div class="col">
-                            <div class="progress progress-sm mr-2">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                <div>
+                    <div class="text-uppercase font-weight-bold text-success mb-1">Total Patients</div>
+                    <div class="h4 font-weight-bold text-dark">215</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Content Row -->
+<!-- Task Completion Rate Card -->
 <div class="row">
-    <!-- Upcoming Appointments -->
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card border-left-info shadow-lg h-100 py-3 hover-effect">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-uppercase font-weight-bold text-info mb-2">Task Completion</div>
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 font-weight-bold text-dark">78%</div>
+                            </div>
+                            <div class="col">
+                                <div class="progress progress-sm animated-progress">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 78%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-list fa-3x text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upcoming Appointments -->
+<div class="row">
     <div class="col-lg-6 mb-4">
-        <div class="card shadow">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Upcoming Appointments</h6>
+        <div class="card shadow-lg hover-effect">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold">Upcoming Appointments</h6>
                 <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="appointmentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    <a class="text-white" href="#" role="button" data-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="appointmentDropdown">
+                    <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">View All</a>
                         <a class="dropdown-item" href="#">Manage</a>
                     </div>
@@ -655,10 +684,6 @@
                 <p>No upcoming appointments.</p>
             </div>
         </div>
-    </div>
-</div>
-
-        </div> 
     </div>
 </div>
 

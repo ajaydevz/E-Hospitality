@@ -1,0 +1,23 @@
+
+<h2>Set Your Schedule</h2>
+<form method="POST">
+    {% csrf_token %}
+    <label>Date:</label>
+    <input type="date" name="date" required>
+
+    <label>Start Time:</label>
+    <input type="time" name="start_time" required>
+
+    <label>End Time:</label>
+    <input type="time" name="end_time" required>
+
+    <button type="submit">Save Schedule</button>
+</form>
+
+<h3>Your Schedules</h3>
+<ul>
+    {% for schedule in schedules %}
+        <li>{{ schedule.date }} - {{ schedule.start_time }} to {{ schedule.end_time }}</li>
+    {% endfor %}
+</ul>
+
