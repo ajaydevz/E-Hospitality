@@ -71,6 +71,7 @@ class DoctorProfile(models.Model):
     experience = models.IntegerField()
     bio = models.TextField()
     image = models.ImageField(upload_to='doctor_images/')  
+    consultation_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0.00) 
 
     def __str__(self):
         return f"Dr. {self.user.first_name} {self.user.last_name} - {self.specialization}"

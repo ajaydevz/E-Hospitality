@@ -256,6 +256,7 @@ def doctor_dashboard(request):
 
     context = {
         "doctor": doctor,  #
+        
     }
 
     return render(request, "doctor/doctor_dashboard.html",context)
@@ -280,6 +281,7 @@ def doctor_details(request, doctor_id):
 
     context ={
         'doctor':doctor,
-        'schedules':schedules
+        'schedules':schedules,
+        'selected_schedule_id': schedules.first().id if schedules else None,  # Set default schedule
     }
     return render(request, 'user/doctor_detail.html', context)

@@ -455,25 +455,29 @@
                             <h3 class="section-title">Working Hours</h3>
                             <div class="working-hours">
                                 {% if schedules %}
-                                    <form method="POST">
+                                
+                                <form id="appointmentForm" method="POST" action="{% url 'book_appointment' selected_schedule_id %}">
+
                                         {% csrf_token %}
                                         <label for="schedule">Select a time slot:</label>
-                                        <select name="schedule_id" id="schedule" class="form-control" required>
+                                        <select name="schedule_id" id="schedule" class="form-control" required onchange="updateFormAction()">
                                             {% for schedule in schedules %}
-                                                <option value="{{ schedule.id }}">
-                                                    {{ schedule.date }} - {{ schedule.start_time }} to {{ schedule.end_time }}
-                                                </option>
+                                                {% if not schedule.is_booked %}
+                                                    <option value="{{ schedule.id }}">
+                                                        {{ schedule.date }} - {{ schedule.start_time }} to {{ schedule.end_time }}
+                                                    </option>
+                                                {% endif %}
                                             {% endfor %}
                                         </select>
-                                        <button type="submit" class="btn btn-primary mt-2 ">Book Appointment</button>
+                                        <p class="mt-2"><strong>Consultation Fee:</strong> ${{ doctor.consultation_fee }}</p>
+                                        <button type="submit" class="btn btn-primary mt-2">Book & Pay</button>
                                     </form>
                                 {% else %}
                                     <p class="text-danger mt-2"><strong>No time slots available today.</strong></p>
                                 {% endif %}
                             </div>
-                        
-                            {% comment %} <a href="#appointment" class="btn btn-outline-primary mt-3">Book an Appointment</a> {% endcomment %}
                         </div>
+                        
                         
                     </div>
                 </div>
@@ -631,6 +635,16 @@
                 toast.remove();
             }, 3000);
         });
+    </script>
+
+    <script>
+        <script>
+            function updateFormAction() {
+                var scheduleId = document.getElementById('schedule').value;
+                var form = document.getElementById('appointmentForm');
+                form.action = `/book-appointment/${scheduleId}/`;
+            }
+        </script>
     </script>
 </body>
 

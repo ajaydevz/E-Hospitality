@@ -24,8 +24,18 @@ class Appointment(models.Model):
 class Payment(models.Model):
     appointment = models.OneToOneField(Appointment, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_intent_id = models.CharField(max_length=255, blank=True, null=True)  # Stripe tracking
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('paid', 'Paid')], default='pending')
     payment_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Payment for {self.appointment} - {self.status}"
+
+class Notification(models.Model):
+    doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notification for Dr. {self.doctor.first_name} - {self.message[:30]}"

@@ -103,6 +103,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+
 # STATIC_ROOT should be used in production for `collectstatic`
 STATIC_ROOT = BASE_DIR / "staticfiles"  
 
@@ -166,3 +167,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when browser is closed
 SESSION_COOKIE_SECURE = True  # Only use cookies over HTTPS
 SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to session cookie
 SESSION_COOKIE_SAMESITE = "Lax"  # Protect against CSRF attacks
+
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51Qf35qQVp9mSTgB86Pvks5BLsqvM3ryJWLoHhj79JeFowTi9RVNjyud758CyYySDFkYJWPI08oBfhiM3IP43QM3O002WeDVtUD'
+STRIPE_SECRET_KEY = 'sk_test_51Qf35qQVp9mSTgB8uNYKhk0R8NsNQIUn0bmnV02sOCtuoO2iM316pdlKbFIDU4ZJuBup6QDa0vPNhe4kOM8fGFra00HhhC0plN'

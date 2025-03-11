@@ -3,6 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import DoctorSchedule, Appointment, Payment
 from django.utils.timezone import now
+import stripe
+from django.conf import settings
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from .models import DoctorSchedule, Appointment, Payment, Notification
+from accounts.models import DoctorProfile
 
 # Doctor: Set Schedule (Traditional Form)
 @login_required
@@ -24,43 +30,74 @@ def set_schedule(request):
     return render(request, 'doctor/set_schedule.html', {'schedules': schedules})
 
 # User: View Doctor Schedules and Book
-@login_required
-def book_appointment(request, doctor_id):
-    schedules = DoctorSchedule.objects.filter(doctor_id=doctor_id, is_booked=False)
 
-    if request.method == 'POST':
-        schedule_id = request.POST.get('schedule_id')
-        schedule = get_object_or_404(DoctorSchedule, id=schedule_id)
-        schedule.is_booked = True
-        schedule.save()
 
-        appointment = Appointment.objects.create(patient=request.user, doctor_schedule=schedule)
-        Payment.objects.create(appointment=appointment, amount=50.00, status='pending')
+@login_required(login_url='login')  # Redirect to login if user is not authenticated
+def book_appointment(request, schedule_id):
+    schedule = get_object_or_404(DoctorSchedule, id=schedule_id, is_booked=False)
+    doctor_profile = get_object_or_404(DoctorProfile, user=schedule.doctor)
 
-        messages.success(request, "Appointment booked! Please proceed with payment.")
-        return redirect('payment_page', appointment_id=appointment.id)
+    stripe.api_key = settings.STRIPE_SECRET_KEY  # Ensure Stripe key is set
 
-    return render(request, 'patient/book_appointment.html', {'schedules': schedules})
+    if request.method == "POST":
+        if not request.user.is_authenticated:
+            return redirect('login')  # Redirect to login page
 
-# Payment Page
-@login_required
-def payment_page(request, appointment_id):
+        # Create an appointment but don't confirm yet
+        appointment = Appointment.objects.create(
+            patient=request.user,  # Ensure user is logged in
+            doctor_schedule=schedule,
+            status="pending"
+        )
+
+        # Create Stripe Checkout session
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'usd',
+                    'product_data': {'name': f"Consultation with Dr. {schedule.doctor.first_name}"},
+                    'unit_amount': int(doctor_profile.consultation_fee * 100),
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url=request.build_absolute_uri(reverse('payment_success', args=[appointment.id])),
+            cancel_url=request.build_absolute_uri(reverse('payment_cancel')),
+        )
+
+        return redirect(session.url)
+
+    return redirect('doctor_detail', doctor_id=schedule.doctor.id)
+
+
+def payment_success(request, appointment_id):
     appointment = get_object_or_404(Appointment, id=appointment_id)
-    
-    if request.method == 'POST':
-        appointment.payment.status = 'paid'
-        appointment.payment.save()
-        messages.success(request, "Payment successful!")
-        return redirect('patient_dashboard')
+    schedule = appointment.doctor_schedule
 
-    return render(request, 'payment/payment_page.html', {'appointment': appointment})
+    # Mark slot as booked
+    schedule.is_booked = True
+    schedule.save()
 
-# Doctor: View Appointments
-@login_required
-def doctor_appointments(request):
-    if request.user.role != 'doctor':
-        messages.error(request, "Unauthorized access!")
-        return redirect('home')
+    # Create a payment entry
+    Payment.objects.create(
+        appointment=appointment,
+        amount=appointment.doctor_schedule.doctor.doctor_profile.consultation_fee,
+        status="paid"
+    )
 
-    appointments = Appointment.objects.filter(doctor_schedule__doctor=request.user)
-    return render(request, 'doctor/appointments.html', {'appointments': appointments})
+    # Send a notification to the doctor
+    Notification.objects.create(
+        doctor=appointment.doctor_schedule.doctor,
+        message=f"New Appointment: {appointment.patient.first_name} booked on {appointment.doctor_schedule.date} at {appointment.doctor_schedule.start_time}."
+    )
+
+    # Confirm appointment
+    appointment.status = "confirmed"
+    appointment.save()
+
+    return render(request, 'user/success.html', {'appointment': appointment})
+
+
+def payment_cancel(request):
+    return render(request, 'appointments/cancel.html')
