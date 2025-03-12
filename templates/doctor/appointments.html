@@ -1,8 +1,0 @@
-
-<h2>Your Appointments</h2>
-<ul>
-    {% for appointment in appointments %}
-        <li>Patient: {{ appointment.patient.first_name }} - Date: {{ appointment.doctor_schedule.date }} - {{ appointment.doctor_schedule.start_time }} to {{ appointment.doctor_schedule.end_time }}</li>
-    {% endfor %}
-</ul>
-

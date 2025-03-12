@@ -14,7 +14,7 @@ class DoctorSchedule(models.Model):
 
 class Appointment(models.Model):
     patient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="appointments")
-    doctor_schedule = models.OneToOneField(DoctorSchedule, on_delete=models.CASCADE)
+    doctor_schedule = models.ForeignKey(DoctorSchedule, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('confirmed', 'Confirmed')], default='pending')
 
@@ -39,3 +39,5 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for Dr. {self.doctor.first_name} - {self.message[:30]}"
+    
+

@@ -3,88 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Dashboard</title>
+    <title>Doctor Dashboard - Medico</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4e73df;
-            --secondary-color: #1cc88a;
+            --primary-color: #4361ee;
+            --secondary-color: #3bc4a0;
             --danger-color: #e74a3b;
             --warning-color: #f6c23e;
             --info-color: #36b9cc;
-            --dark-color: #5a5c69;
+            --dark-color: #373a47;
             --light-color: #f8f9fc;
+            --border-radius: 0.75rem;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s ease;
         }
         
         body {
-            background-color: #f8f9fc;
-            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7fe;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #444;
+            overflow-x: hidden;
         }
         
+        /* Sidebar */
         .sidebar {
             min-height: 100vh;
-            background: linear-gradient(180deg, var(--primary-color) 0%, #224abe 100%);
+            background: linear-gradient(180deg, var(--primary-color) 0%, #2d43b9 100%);
             z-index: 100;
-            transition: all 0.3s;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
         }
         
         .sidebar .sidebar-brand {
             height: 4.375rem;
             text-decoration: none;
-            font-size: 1rem;
-            font-weight: 800;
+            font-size: 1.25rem;
+            font-weight: 700;
             padding: 1.5rem 1rem;
             text-align: center;
             letter-spacing: 0.05rem;
             z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .sidebar .nav-item {
             position: relative;
+            margin-bottom: 0.5rem;
+            padding: 0 1rem;
         }
         
         .sidebar .nav-item .nav-link {
-            display: block;
+            display: flex;
+            align-items: center;
             width: 100%;
-            text-align: left;
-            padding: 1rem;
+            padding: 0.75rem 1rem;
             color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
         }
         
         .sidebar .nav-item .nav-link:hover,
         .sidebar .nav-item .nav-link.active {
             color: #fff;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 0.35rem;
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
         }
         
         .sidebar .nav-item .nav-link i {
-            margin-right: 0.5rem;
-            font-size: 0.85rem;
+            margin-right: 0.75rem;
+            font-size: 1rem;
             width: 1.5rem;
             text-align: center;
         }
         
         .sidebar-divider {
             border-top: 1px solid rgba(255, 255, 255, 0.15);
-            margin: 1rem 0;
+            margin: 1rem;
         }
         
         .sidebar-heading {
-            color: rgba(255, 255, 255, 0.4);
-            font-weight: 700;
-            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+            font-size: 0.8rem;
             padding: 0 1rem;
             text-transform: uppercase;
-            letter-spacing: 0.13rem;
+            letter-spacing: 0.1rem;
             margin-top: 1rem;
         }
         
+        /* Content */
+        .content {
+            transition: var(--transition);
+            margin-left: 250px;
+            width: calc(100% - 250px);
+        }
+        
+        /* Cards */
         .card {
             position: relative;
             display: flex;
@@ -93,211 +121,74 @@
             word-wrap: break-word;
             background-color: #fff;
             background-clip: border-box;
-            border: 1px solid #e3e6f0;
-            border-radius: 0.35rem;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             margin-bottom: 1.5rem;
-            transition: transform 0.3s ease;
+            transition: var(--transition);
+            overflow: hidden;
         }
         
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: var(--box-shadow);
         }
         
         .card-header {
-            background-color: #f8f9fc;
-            border-bottom: 1px solid #e3e6f0;
-            padding: 0.75rem 1.25rem;
+            background-color: transparent;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1.25rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-weight: 600;
         }
         
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        /* Gradients */
         .bg-gradient-primary {
-            background: linear-gradient(180deg, var(--primary-color) 0%, #224abe 100%);
+            background: linear-gradient(45deg, var(--primary-color) 0%, #738eec 100%);
             color: white;
         }
         
         .bg-gradient-success {
-            background: linear-gradient(180deg, var(--secondary-color) 0%, #13855c 100%);
+            background: linear-gradient(45deg, var(--secondary-color) 0%, #4ee5c5 100%);
             color: white;
         }
         
         .bg-gradient-info {
-            background: linear-gradient(180deg, var(--info-color) 0%, #2a96a5 100%);
+            background: linear-gradient(45deg, var(--info-color) 0%, #5ecce5 100%);
             color: white;
         }
         
         .bg-gradient-warning {
-            background: linear-gradient(180deg, var(--warning-color) 0%, #dda20a 100%);
+            background: linear-gradient(45deg, var(--warning-color) 0%, #ffd166 100%);
             color: white;
         }
         
+        /* Topbar */
         .topbar {
             height: 4.375rem;
             background-color: #fff;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-        }
-        
-        .topbar .dropdown .dropdown-toggle {
-            color: #d1d3e2;
-        }
-        
-        .topbar .dropdown .dropdown-toggle::after {
-            display: none;
-        }
-        
-        .dropdown-menu {
-            min-width: 15rem;
-            border: none;
-            border-radius: 0.35rem;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-        }
-        
-        .dropdown-list {
-            padding: 0;
-            border: none;
-            border-radius: 0.35rem;
-            width: 20rem;
-        }
-        
-        .dropdown-header {
-            background-color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
-            color: #fff;
-        }
-        
-        .dropdown-list .dropdown-item {
-            white-space: normal;
-            padding: 0.5rem 1rem;
-            border-bottom: 1px solid #e3e6f0;
-        }
-        
-        .dropdown-list .dropdown-item:active {
-            background-color: #eaecf4;
-            color: #3a3b45;
-        }
-        
-        .dropdown-list .dropdown-item:last-child {
-            border-bottom: none;
-        }
-        
-        .dropdown-list .icon-circle {
-            height: 2.5rem;
-            width: 2.5rem;
-            border-radius: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .bg-primary {
-            background-color: var(--primary-color) !important;
-        }
-        
-        .bg-success {
-            background-color: var(--secondary-color) !important;
-        }
-        
-        .bg-warning {
-            background-color: var(--warning-color) !important;
-        }
-        
-        .bg-danger {
-            background-color: var(--danger-color) !important;
-        }
-        
-        .text-gray-500 {
-            color: #b7b9cc !important;
-        }
-        
-        .text-gray-800 {
-            color: #5a5c69 !important;
-        }
-        
-        .img-profile {
-            height: 2rem;
-            width: 2rem;
-        }
-        
-        .profile-dropdown {
-            position: absolute;
-            right: 1rem;
-        }
-        
-        .rounded-circle {
-            border-radius: 50% !important;
-        }
-        
-        .notification-badge {
-            position: absolute;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
             top: 0;
-            right: 0.25rem;
-            transform: translate(25%, -25%);
-            font-size: 0.6rem;
+            z-index: 50;
         }
         
-        .progress-sm {
-            height: 0.5rem;
-        }
-        
-        .chart-area {
-            height: 20rem;
-            width: 100%;
-        }
-        
-        .chart-pie {
-            height: 20rem;
-        }
-        
-        .appointment-item {
-            border-left: 0.25rem solid var(--primary-color);
-            transition: all 0.3s;
-        }
-        
-        .appointment-item:hover {
-            background-color: #f8f9fc;
-            transform: translateX(5px);
-        }
-        
-        .appointment-pending {
-            border-left-color: var(--warning-color);
-        }
-        
-        .appointment-confirmed {
-            border-left-color: var(--secondary-color);
-        }
-        
-        .appointment-cancelled {
-            border-left-color: var(--danger-color);
-        }
-        
-        .appointment-completed {
-            border-left-color: var(--info-color);
-        }
-        
-        .text-xs {
-            font-size: 0.7rem;
-        }
-        
-        .text-lg {
-            font-size: 1.2rem;
-        }
-        
-        .font-weight-bold {
-            font-weight: 700 !important;
-        }
-        
+        /* Welcome Panel */
         .welcome-panel {
-            background: linear-gradient(to right, #4e73df, #224abe);
+            background: linear-gradient(120deg, #4361ee 0%, #3a56d4 100%);
             color: white;
-            border-radius: 0.35rem;
+            border-radius: var(--border-radius);
             padding: 2rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             position: relative;
             overflow: hidden;
+            box-shadow: var(--box-shadow);
         }
         
         .welcome-panel::before {
@@ -322,106 +213,168 @@
             background: rgba(255, 255, 255, 0.1);
         }
         
-        @media (max-width: 768px) {
+        /* Hover effects */
+        .hover-effect {
+            transition: var(--transition);
+        }
+        
+        .hover-effect:hover {
+            transform: scale(1.03);
+            box-shadow: var(--box-shadow);
+        }
+        
+        /* Icon box */
+        .icon-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 1.5rem;
+        }
+        
+        /* Appointment list */
+        .appointment-item {
+            border-left: 0.25rem solid var(--primary-color);
+            background-color: #fff;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .appointment-item:hover {
+            background-color: #f8f9fc;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .appointment-pending {
+            border-left-color: var(--warning-color);
+        }
+        
+        .appointment-confirmed {
+            border-left-color: var(--secondary-color);
+        }
+        
+        .appointment-cancelled {
+            border-left-color: var(--danger-color);
+        }
+        
+        .appointment-completed {
+            border-left-color: var(--info-color);
+        }
+        
+        /* Responsive */
+        .sidebar-toggler {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1000;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 991px) {
             .sidebar {
-                width: 6.5rem !important;
-                overflow: hidden;
+                transform: translateX(-100%);
             }
             
-            .sidebar .nav-item .nav-link {
-                text-align: center;
-                padding: 0.75rem 1rem;
-                width: 6.5rem;
-            }
-            
-            .sidebar .nav-item .nav-link span {
-                display: none;
-            }
-            
-            .sidebar .nav-item .nav-link i {
-                margin-right: 0;
-                font-size: 1rem;
-                width: auto;
-            }
-            
-            .sidebar .sidebar-brand {
-                padding: 1.5rem 1rem;
-            }
-            
-            .sidebar .sidebar-brand .sidebar-brand-text {
-                display: none;
-            }
-            
-            .sidebar .sidebar-heading {
-                text-align: center;
+            .sidebar.show {
+                transform: translateX(0);
             }
             
             .content {
-                margin-left: 6.5rem !important;
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .sidebar-toggler {
+                display: flex;
             }
         }
         
-        @media (min-width: 768px) {
-            .chart-area, .chart-pie {
-                height: 25rem;
-            }
-            
-            .sidebar {
-                width: 14rem !important;
-            }
-            
-            .content {
-                margin-left: 14rem;
-            }
-        }
-        @media (min-width: 768px) {
-            .sidebar {
-                width: 18rem !important;
-            }
-            
-            .content {
-                margin-left: 18rem;
-            }
+        /* Additional Styling for Notifications */
+        .notification-list {
+            list-style: none;
+            padding: 0;
         }
         
-    </style>
-
-    <style>
-        /* Add smooth hover effect */
-.hover-effect {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-effect:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Style icons */
-.icon-box {
-    background: rgba(0, 0, 0, 0.05);
-    padding: 15px;
-    border-radius: 10px;
-}
-
-/* Animated Progress Bar */
-.animated-progress .progress-bar {
-    transition: width 1s ease-in-out;
-}
-
+        .notification-item {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 0.75rem;
+            background-color: #fff;
+            border-left: 4px solid var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .notification-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .notification-time {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        /* Statistics Cards */
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            height: 100%;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card p {
+            margin-bottom: 0;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
     <!-- Page Wrapper -->
-    <div class="d-flex" id="wrapper" style=" ">
+    <div class="d-flex" id="wrapper">
+        
+        <!-- Sidebar Toggle Button (Mobile) -->
+        <button class="sidebar-toggler" id="sidebarToggler">
+            <i class="fas fa-bars"></i>
+        </button>
         
         <!-- Sidebar -->
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <div class="sidebar-brand d-flex align-items-center justify-content-center">
-                <div class="sidebar-brand-icon">
-                    <i class="fas fa-stethoscope fa-2x text-white"></i>
+                <div class="sidebar-brand-icon me-2">
+                    <i class="fas fa-stethoscope text-white"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3 text-white">Medico</div>
+                <div class="sidebar-brand-text text-white">Medico</div>
             </div>
             
             <!-- Divider -->
@@ -445,7 +398,7 @@
             
             <!-- Nav Item - Appointments -->
             <div class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{% url 'doctor_notifications' %}">
                     <i class="fas fa-fw fa-calendar-check"></i>
                     <span>Appointments</span>
                 </a>
@@ -460,12 +413,7 @@
             </div>
             
             <!-- Nav Item - Prescriptions -->
-            <div class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-prescription"></i>
-                    <span>Prescriptions</span>
-                </a>
-            </div>
+
             
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -477,7 +425,7 @@
             
             <!-- Nav Item - Schedule -->
             <div class="nav-item">
-                <a class="nav-link" href="{% url "set_schedule" %}">
+                <a class="nav-link" href="{% url 'set_schedule' %}">
                     <i class="fas fa-fw fa-clock"></i>
                     <span>Schedule</span>
                 </a>
@@ -491,200 +439,246 @@
                 </a>
             </div>
             
-            <!-- Nav Item - Reports -->
-            <div class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Reports</span>
-                </a>
-            </div>
-            
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-            
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Account
-            </div>
-            
-            <!-- Nav Item - Settings -->
-            <div class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Settings</span>
-                </a>
-            </div>
-            
             <!-- Nav Item - Logout -->
-            <div class="nav-item">
-                <a class="nav-link" href="{% url 'doctor-logout' %}" data-toggle="modal" data-target="#logoutModal">
+            {% comment %} <div class="nav-item mt-auto">
+                <a class="nav-link" href="{% url 'doctor-logout' %}">
                     <i class="fas fa-fw fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>
-            </div>
-            
+            </div> {% endcomment %}
         </div>
         <!-- End of Sidebar -->
-        <!-- Content Wrapper -->
-<div class="content flex-grow-1 " style="margin-left: 20px;" >
-    <!-- Top Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white topbar mb-4 static-top shadow">
         
-        <!-- Sidebar Toggle (Visible Only on Small Screens) -->
-        <button id="sidebarToggleTop" class="btn btn-link d-lg-none rounded-circle">
-            <i class="fa fa-bars"></i>
-        </button>
-
-        <!-- Topbar Search (Responsive) -->
-        <form class="d-none d-sm-inline-block form-inline ml-auto mw-100 navbar-search">
-            <div class="input-group">
-                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for...">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                    </button>
+        <!-- Content Wrapper -->
+        <div class="content">
+            <!-- Top Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white topbar mb-4 static-top shadow-sm">
+                
+                <!-- Topbar Search -->
+                <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Navbar Profile -->
+                <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img class="img-profile rounded-circle me-2" src="" alt="">
+                            <span class="d-none d-lg-inline text-gray-600 small">Dr. {{ doctor.user.first_name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'doctor-logout' %}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Page Content -->
+            <div class="container-fluid px-4">
+                <!-- Welcome Panel -->
+                <div class="welcome-panel mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="display-5 fw-bold mb-2">Welcome back, Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h1>
+                            <p class="mb-0 fs-5">It's {{ today|date:"l, F j, Y" }}. You have 8 appointments today.</p>
+                        </div>
+                        {% comment %} <div class="col-md-4 text-md-end">
+                            <button class="btn btn-light btn-lg"><i class="fas fa-calendar-plus me-2"></i> New Appointment</button>
+                        </div> {% endcomment %}
+                    </div>
                 </div>
-            </div>
-        </form>
-
-        {% comment %} <!-- Topbar Navbar -->
-        <ul class="navbar-nav ml-auto align-items-center">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge badge-danger">3+</span>
-                </a>
-            </li>
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown">
-                    <i class="fas fa-envelope"></i>
-                    <span class="badge badge-danger">7</span>
-                </a>
-            </li>
-
-            <!-- User Profile -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{doctor.user.fisrt_name}}</span>
-                    <img class="img-profile rounded-circle" src="/api/placeholder/60/60" alt="Profile Image">
-                </a>
-            </li>
-        </ul> {% endcomment %}
-    </nav>
-
-    <!-- Page Content -->
-    <!-- Page Content -->
-<div class="container-fluid">
-    <!-- Welcome Panel -->
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <h1 class="h2">Welcome back, Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name}}</h1>
-            <p>It's {{ today|date:"l, F j, Y" }}. You have 8 appointments today.</p>
-        </div>
-        <div class="col-md-4 text-right">
-            <a href="#" class="btn btn-light">
-                <i class="fas fa-calendar-alt"></i> View Schedule
-            </a>
-        </div>
-    </div>
-<!-- Dashboard Cards -->
-<div class="row">
-    <!-- Today's Appointments -->
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card border-left-primary shadow-lg h-100 py-3 hover-effect">
-            <div class="card-body d-flex align-items-center">
-                <div class="icon-box mr-3">
-                    <i class="fas fa-calendar-check fa-3x text-primary"></i>
-                </div>
-                <div>
-                    <div class="text-uppercase font-weight-bold text-primary mb-1">Today's Appointments</div>
-                    <div class="h4 font-weight-bold text-dark">8</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pending Requests -->
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card border-left-warning shadow-lg h-100 py-3 hover-effect">
-            <div class="card-body d-flex align-items-center">
-                <div class="icon-box mr-3">
-                    <i class="fas fa-envelope-open-text fa-3x text-warning"></i>
-                </div>
-                <div>
-                    <div class="text-uppercase font-weight-bold text-warning mb-1">Pending Requests</div>
-                    <div class="h4 font-weight-bold text-dark">18</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Total Patients -->
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card border-left-success shadow-lg h-100 py-3 hover-effect">
-            <div class="card-body d-flex align-items-center">
-                <div class="icon-box mr-3">
-                    <i class="fas fa-users fa-3x text-success"></i>
-                </div>
-                <div>
-                    <div class="text-uppercase font-weight-bold text-success mb-1">Total Patients</div>
-                    <div class="h4 font-weight-bold text-dark">215</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Task Completion Rate Card -->
-<div class="row">
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card border-left-info shadow-lg h-100 py-3 hover-effect">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-uppercase font-weight-bold text-info mb-2">Task Completion</div>
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="h5 mb-0 font-weight-bold text-dark">78%</div>
-                            </div>
-                            <div class="col">
-                                <div class="progress progress-sm animated-progress">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 78%"></div>
+                
+                <!-- Statistics Cards -->
+                <div class="row mb-4">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stat-card bg-gradient-primary hover-effect">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div>
+                                    <h2>8</h2>
+                                    <p>Today's Appointments</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-3x text-gray-400"></i>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stat-card bg-gradient-success hover-effect">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div>
+                                    <h2>156</h2>
+                                    <p>Total Patients</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stat-card bg-gradient-info hover-effect">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                                <div>
+                                    <h2>38</h2>
+                                    <p>Pending Reports</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="stat-card bg-gradient-warning hover-effect">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box">
+                                    <i class="fas fa-bell"></i>
+                                </div>
+                                <div>
+                                    <h2>12</h2>
+                                    <p>New Notifications</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="row">
+                    <!-- Notifications -->
+                    <div class="col-lg-5 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header">
+                                <h5 class="m-0 font-weight-bold">New Notifications</h5>
+                                <a href="#" class="btn btn-sm btn-primary">View All</a>
+                            </div>
+                            <div class="card-body">
+                                {% if notifications %}
+                                <ul class="notification-list">
+                                    {% for notification in notifications %}
+                                    <li class="notification-item hover-effect">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <p class="mb-1">{{ notification.message }}</p>
+                                                <span class="notification-time"><i class="far fa-clock me-1"></i>{{ notification.created_at|date:"M d, Y H:i" }}</span>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-check"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <div class="text-center py-5">
+                                    <i class="fas fa-bell-slash fa-3x text-muted mb-3"></i>
+                                    <p class="text-muted">No new notifications yet.</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Weekly Schedule -->
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header">
+                                <h5 class="m-0 font-weight-bold">Weekly Schedule</h5>
+                                <button class="btn btn-sm btn-primary">Edit Schedule</button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Monday</th>
+                                                <th>Tuesday</th>
+                                                <th>Wednesday</th>
+                                                <th>Thursday</th>
+                                                <th>Friday</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>9:00 - 11:00</td>
+                                                <td class="bg-light">Consultations</td>
+                                                <td class="bg-light">Consultations</td>
+                                                <td class="bg-light">Consultations</td>
+                                                <td class="bg-light">Consultations</td>
+                                                <td class="bg-light">Consultations</td>
+                                            </tr>
+                                            <tr>
+                                                <td>11:00 - 12:00</td>
+                                                <td>Break</td>
+                                                <td>Break</td>
+                                                <td>Break</td>
+                                                <td>Break</td>
+                                                <td>Break</td>
+                                            </tr>
+                                            <tr>
+                                                <td>12:00 - 14:00</td>
+                                                <td class="bg-light">Appointments</td>
+                                                <td class="bg-light">Surgery</td>
+                                                <td class="bg-light">Appointments</td>
+                                                <td class="bg-light">Surgery</td>
+                                                <td class="bg-light">Appointments</td>
+                                            </tr>
+                                            <tr>
+                                                <td>14:00 - 16:00</td>
+                                                <td class="bg-light">Rounds</td>
+                                                <td class="bg-light">Rounds</td>
+                                                <td class="bg-light">Rounds</td>
+                                                <td class="bg-light">Rounds</td>
+                                                <td class="bg-light">Rounds</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Upcoming Appointments -->
-<div class="row">
-    <div class="col-lg-6 mb-4">
-        <div class="card shadow-lg hover-effect">
-            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold">Upcoming Appointments</h6>
-                <div class="dropdown no-arrow">
-                    <a class="text-white" href="#" role="button" data-toggle="dropdown">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">View All</a>
-                        <a class="dropdown-item" href="#">Manage</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <p>No upcoming appointments.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom scripts -->
+    <script>
+        // Toggle sidebar
+        document.getElementById('sidebarToggler').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('show');
+        });
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggler = document.getElementById('sidebarToggler');
+            
+            if (window.innerWidth < 992 && 
+                sidebar.classList.contains('show') && 
+                !sidebar.contains(event.target) && 
+                !sidebarToggler.contains(event.target)) {
+                sidebar.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

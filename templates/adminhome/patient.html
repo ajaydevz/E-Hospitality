@@ -208,7 +208,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="{% url "patients" %}">
+          <a class="nav-link text-white" href="#">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -413,9 +413,9 @@
             <p class="mb-0">Manage your hospital efficiently with real-time insights and controls.</p>
           </div>
           <div class="col-12 col-md-6 text-md-end mt-3 mt-md-0">
-            <button class="btn bg-gradient-info me-2" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+            {% comment %} <button class="btn bg-gradient-info me-2" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
               <i class="material-icons opacity-10 me-1">add</i> New Doctor
-            </button>            
+            </button>             {% endcomment %}
             {% comment %} <button class="btn bg-gradient-success"><i class="material-icons opacity-10 me-1">add</i>New Patient</button> {% endcomment %}
           </div>
         </div>
@@ -443,41 +443,36 @@
                         <thead>
                             <tr>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Staff Member</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Role</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">contact number</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Joined</th>
                                 <th class="text-secondary opacity-7">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for doctor in doctors %}
+                            {% for patient in patients %}
                             <tr>
                                 <td>
                                     <div class="d-flex px-3 py-1">
-                                      {% if doctor.image %}
-                                      <img src="{{ doctor.image.url }}" class="avatar avatar-sm me-3" alt="doctor">
-                                      {% else %}
-                                      <img src="{% static 'adminhome/img/default-avatar.jpg' %}" class="avatar avatar-sm me-3" alt="doctor">
-                                      {% endif %}
+                                    
                                         <div class="d-flex flex-column justify-content-center">
-                                            <h6 class="mb-0 text-sm">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h6>
-                                            <p class="text-xs text-secondary mb-0">{{ doctor.user.email }}</p>
+                                            <h6 class="mb-0 text-sm"> {{ patient.first_name }} {{ patient.last_name }}</h6>
+                                            <p class="text-xs text-secondary mb-0">{{ patient.email }}</p>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
-                                    <p class="text-xs font-weight-bold mb-0">{{ doctor.specialization }}</p>
-                                    <p class="text-xs text-secondary mb-0">{{ doctor.qualification }}</p>
+                                <td class="align-middle text-center">
+                                    <p class="text-xs font-weight-bold mb-0">{{ patient.phone_number }}</p>
                                 </td>
                                 <td class="align-middle text-center text-sm">
-                                    {% if doctor.user.is_active %}
+                                    {% if patient.is_active %}
                                         <span class="badge badge-sm bg-gradient-success">Active</span>
                                     {% else %}
                                         <span class="badge badge-sm bg-gradient-danger">Inactive</span>
                                     {% endif %}
                                 </td>
                                 <td class="align-middle text-center">
-                                    <span class="text-secondary text-xs font-weight-bold">{{ doctor.user.date_joined|date:"d/m/Y" }}</span>
+                                    <span class="text-secondary text-xs font-weight-bold">{{ patient.date_joined|date:"d/m/Y" }}</span>
                                 </td>
                                 <td class="align-middle">
                                     <a href="javascript:;" class="action-btn text-secondary font-weight-bold text-xs me-2" data-bs-toggle="tooltip" title="Edit user">
@@ -490,10 +485,11 @@
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="5" class="text-center">No doctors found</td>
+                                <td colspan="5" class="text-center">No patients found</td>
                             </tr>
                             {% endfor %}
                         </tbody>
+                        
                     </table>
                 </div>
             </div>
@@ -501,103 +497,7 @@
     </div>
 </div>
 
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
-  <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="d-flex">
-          <div class="toast-body">
-              Doctor added successfully!
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-  </div>
-</div>
 
-
-<!-- Add Doctor Modal -->
-<div class="modal fade" id="addDoctorModal" tabindex="-1" aria-labelledby="addDoctorModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-md">
-      <div class="modal-content shadow-lg rounded-3">
-          <div class="modal-header bg-info text-white py-2">
-              <h6 class="modal-title" id="addDoctorModalLabel">Add Doctor</h6>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body p-3">
-             
-            <form id="addDoctorForm" method="POST" action="{% url 'add_doctor' %}" enctype="multipart/form-data">
-              {% csrf_token %}
-          
-              <div class="mb-2">
-                  <label for="email" class="form-label mb-1">Email</label>
-                  <input type="email" class="form-control custom-input" id="email" name="email" required>
-              </div>
-          
-              <div class="row">
-                  <div class="col-6 mb-2">
-                      <label for="first_name" class="form-label mb-1">First Name</label>
-                      <input type="text" class="form-control custom-input" id="first_name" name="first_name" required>
-                  </div>
-                  <div class="col-6 mb-2">
-                      <label for="last_name" class="form-label mb-1">Last Name</label>
-                      <input type="text" class="form-control custom-input" id="last_name" name="last_name" required>
-                  </div>
-              </div>
-          
-              <div class="row">
-                  <div class="col-6 mb-2">
-                      <label for="phone_number" class="form-label mb-1">Phone Number</label>
-                      <input type="text" class="form-control custom-input" id="phone_number" name="phone_number" required>
-                  </div>
-                  
-                  <div class="col-6 mb-2">
-                      <label for="specialization" class="form-label mb-1">Specialization</label>
-                      <select class="form-select custom-input" id="specialization" name="specialization" required>
-                          <option value="" selected disabled>Select Specialization</option>
-                          <option value="Cardiologist">Cardiologist</option>
-                          <option value="Dermatologist">Dermatologist</option>
-                          <option value="Neurologist">Neurologist</option>
-                          <option value="Orthopedic">Orthopedic</option>
-                          <option value="Pediatrician">Pediatrician</option>
-                          <option value="Psychiatrist">Psychiatrist</option>
-                          <option value="Radiologist">Radiologist</option>
-                          <option value="Urologist">Urologist</option>
-                      </select>
-                  </div>
-              </div>
-          
-              <div class="row">
-                  <div class="col-6 mb-2">
-                      <label for="qualification" class="form-label mb-1">Qualification</label>
-                      <input type="text" class="form-control custom-input" id="qualification" name="qualification" required>
-                  </div>
-                  <div class="col-6 mb-2">
-                      <label for="experience" class="form-label mb-1">Experience (Years)</label>
-                      <input type="number" class="form-control custom-input" id="experience" name="experience" required>
-                  </div>
-              </div>
-          
-              <div class="mb-2">
-                  <label for="bio" class="form-label mb-1">Bio</label>
-                  <textarea class="form-control custom-input" id="bio" name="bio" rows="2" required></textarea>
-              </div>
-
-              <div class="mb-2">
-                <label for="image" class="form-label mb-1">Profile Image</label>
-                <input type="file" class="form-control custom-input" id="image" name="image" accept="image/*">
-            </div>
-            <div class="col-6 mb-2">
-              <label for="consultation_fee" class="form-label mb-1">Consultation Fee ($)</label>
-              <input type="number" class="form-control custom-input" id="consultation_fee" name="consultation_fee" step="0.01" min="0" required>
-          </div>
-          
-              <div class="d-grid">
-                  <button type="submit" class="btn btn-success btn-sm rounded-2">Add Doctor</button>
-              </div>
-          </form>
-          
-          </div>
-      </div>
-  </div>
-</div>
 
 <!-- Custom Styling -->
 <style>
@@ -615,45 +515,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
- <script>
-  document.getElementById('addDoctorForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    let formData = new FormData(this);  // FormData automatically collects input values
-
-    fetch("{% url 'add_doctor' %}", {
-        method: "POST",
-        body: formData,
-        headers: {
-            "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value  // CSRF Token
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Hide the modal
-            let modalElement = document.getElementById('addDoctorModal');
-            let modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-            modal.hide();
-
-            // Show success toast
-            showToast("Doctor added successfully!", "success");
-
-            // Reload after a short delay
-            setTimeout(() => {
-                location.reload();
-            }, 1500);
-        } else {
-            showToast(data.message, "danger");
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        showToast("An error occurred. Please try again.", "danger");
-    });
-});
-
-</script> 
+ 
 
 <!-- Initialize Bootstrap tooltips -->
 <script>

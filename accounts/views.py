@@ -160,6 +160,9 @@ def admin_doctor_list(request):
     doctors = DoctorProfile.objects.all()
     return render(request, 'adminhome/tables.html', {'doctors': doctors})
 
+def admin_patient_list(request):
+    patients = CustomUser.objects.filter(role="patient")  # Fetch only users with role 'patient'
+    return render(request, 'adminhome/patient.html', {'patients': patients})
 
 
 def generate_password():
@@ -195,13 +198,21 @@ def add_doctor(request):
 
         image = request.FILES.get('image', 'doctor_images/default.jpg')
 
+        consultation_fee = request.POST.get('consultation_fee', 0.00)
+        
+        try:
+            consultation_fee = float(consultation_fee)
+        except ValueError:
+            return JsonResponse({'success': False, 'message': 'Invalid consultation fee!'}, status=400)
+
         DoctorProfile.objects.create(
             user=doctor,
             specialization=request.POST.get('specialization'),
             qualification=request.POST.get('qualification'),
             experience=request.POST.get('experience'),
             bio=request.POST.get('bio'),
-            image=image 
+            image=image,
+            consultation_fee=consultation_fee
         )
 
         send_mail(
@@ -256,7 +267,7 @@ def doctor_dashboard(request):
 
     context = {
         "doctor": doctor,  #
-        
+
     }
 
     return render(request, "doctor/doctor_dashboard.html",context)
@@ -273,6 +284,7 @@ def doctor_logout(request):
 def doctor_list(request):
     doctors = DoctorProfile.objects.all()
     return render(request,'user/doctor.html',{'doctors':doctors})
+
 
 
 def doctor_details(request, doctor_id):
