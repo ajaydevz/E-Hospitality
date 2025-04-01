@@ -1,18 +1,23 @@
 {
+    "version": 2,
     "builds": [
-        {
-            "src": "online_booking/wsgi.py",
-            "use": "@vercel/python",
-            "config": {
-                "maxLambdaSize": "15mb",
-                "runtime": "python3.11.3"
-            }
+      {
+        "src": "online_booking/wsgi.py",
+        "use": "@vercel/python",
+        "config": {
+          "maxLambdaSize": "15mb",
+          "runtime": "python3.11.3"
         }
+      }
     ],
     "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "online_booking/wsgi.py"
-        }
-    ]
-}
+      {
+        "src": "/(.*)",
+        "dest": "/online_booking/wsgi.py"
+      }
+    ],
+    "env": {
+      "DJANGO_SETTINGS_MODULE": "online_booking.settings.production"
+    }
+  }
+  
