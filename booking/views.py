@@ -116,7 +116,7 @@ def payment_success(request, appointment_id):
             appointment.save()
             
             # Redirect to prevent duplicate resubmission on refresh
-            return redirect("payment_success_page")
+            return redirect("payment_success")
 
         except IntegrityError:
             return HttpResponse("Payment already recorded.", status=400)
