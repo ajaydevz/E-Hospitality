@@ -31,7 +31,7 @@ SECRET_KEY='django-insecure-416#+uurj360+ssc#n@rpeq&smbx!+@o5^kypy0rhvau^))hi8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["e-hospitality-1.onrender.com"]
 
 # Use Cloudinary for media file storage
 
