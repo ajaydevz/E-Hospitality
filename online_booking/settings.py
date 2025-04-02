@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,7 +33,14 @@ SECRET_KEY = 'django-insecure-416#+uurj360+ssc#n@rpeq&smbx!+@o5^kypy0rhvau^))hi8
 # DEBUG = True
 ALLOWED_HOSTS = ["e-hospitality-1.onrender.com", "localhost", "127.0.0.1"]
 
+# Use Cloudinary for media file storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dzzzacpvi',
+    'API_KEY': '687427197692178',
+    'API_SECRET': '99jqedDvaLqKQFbc5eBSrMAXJ6U'
+}
 # Application definition
 
 INSTALLED_APPS = [

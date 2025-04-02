@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin,Group,Permission
-
+from cloudinary.models import CloudinaryField
 # Create your models here.
 
 # User Manager
@@ -70,7 +70,9 @@ class DoctorProfile(models.Model):
     qualification = models.CharField(max_length=200)
     experience = models.IntegerField()
     bio = models.TextField()
-    image = models.ImageField(upload_to='doctor_images/')  
+    # image = models.ImageField(upload_to='doctor_images/')  
+
+    image = CloudinaryField('image')  # Cloudinary will handle uploads
     consultation_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0.00) 
 
     def __str__(self):
