@@ -27,8 +27,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-416#+uurj360+ssc#n@rpeq&smbx!+@o5^kypy0rhvau^))hi8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = ['render-tutorial.onrender.com']
+# DEBUG = True
+ALLOWED_HOSTS = ["e-hospitality-1.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -102,6 +102,10 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     "default": dj_database_url.parse(os.getenv("DATABASE_URL"))
 }
+
+# Debug mode (use False in production)
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+
 
 STATIC_URL = "/static/"  # URL for static files
 
